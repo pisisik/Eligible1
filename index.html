@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELIGIBLE</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+
+    :root {
+      --black:       #060604;
+      --dark:        #0e0e0b;
+      --mid:         #181810;
+      --grey-dark:   #272720;
+      --grey:        #4a4a3e;
+      --grey-light:  #7a7a68;
+      --grey-text:   #a8a898;
+      --white:       #d8d8c8;
+      --yellow:      #c8a800;
+      --yellow-dim:  #7a6600;
+      --yellow-pale: #e8d070;
+      --yellow-ghost:#2a2200;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--grey-text);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 19px;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* grain texture overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.35;
+    }
+
+    /* scanlines */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.12) 3px,
+        rgba(0,0,0,0.12) 4px
+      );
+      pointer-events: none;
+      z-index: 9997;
+    }
+
+    /* ── NAV ── */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 500;
+      padding: 1.4rem 3.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(6,6,4,0.98) 0%, transparent 100%);
+    }
+
+    .header-logo {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--yellow);
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+    }
+
+    nav { display: flex; gap: 3rem; }
+
+    nav a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      color: var(--grey);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    nav a:hover { color: var(--yellow-pale); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 3.5rem 5rem;
+      gap: 5rem;
+      position: relative;
+      border-bottom: 1px solid var(--grey-dark);
+    }
+
+    .hero-text { position: relative; }
+
+    .hero-eyebrow {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--yellow-dim);
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--yellow-dim);
+    }
+
+    h1 {
+      font-family: 'IM Fell English', serif;
+      font-size: clamp(4.5rem, 9vw, 8.5rem);
+      font-weight: 400;
+      line-height: 0.88;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      margin-bottom: 3rem;
+    }
+
+    h1 .accent {
+      color: var(--yellow);
+      font-style: italic;
+    }
+
+    .hero-body {
+      font-size: 1.15rem;
+      color: var(--grey-text);
+      line-height: 2;
+      max-width: 480px;
+    }
+
+    .hero-body p { margin-bottom: 1.5rem; }
+
+    .hero-body strong {
+      color: var(--yellow-pale);
+      font-weight: 400;
+    }
+
+    .hero-body .final-line {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      color: var(--yellow);
+      display: block;
+      margin-top: 2rem;
+      line-height: 1.5;
+    }
+
+    /* hologram side */
+    .hero-visual { position: relative; }
+
+    .holo-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      isolation: isolate;
+    }
+
+    .holo-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0) brightness(1.1) contrast(1.2);
+      mix-blend-mode: normal;
+      background: #000;
+    }
+
+    .holo-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      background: radial-gradient(ellipse at center,
+        rgba(160, 160, 160, 0.05) 0%,
+        transparent 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .holo-scanlines {
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(0deg,
+        transparent, transparent 3px,
+        rgba(200,200,200,0.03) 3px, rgba(200,200,200,0.03) 4px);
+      pointer-events: none; z-index: 2;
+    }
+
+    .holo-overlay {
+      position: absolute; inset: 0; z-index: 3;
+      pointer-events: none;
+      animation: holoFlicker 7s step-end infinite;
+    }
+    @keyframes holoFlicker {
+      0%,100%{opacity:1} 3%{opacity:0.8} 3.5%{opacity:1}
+      47%{opacity:1} 47.2%{opacity:0.65} 47.5%{opacity:1}
+      71%{opacity:1} 71.1%{opacity:0.55} 71.4%{opacity:1}
+    }
+
+    .holo-glitch-line {
+      position: absolute; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg,
+        transparent 0%, rgba(200,168,0,0.4) 25%,
+        rgba(240,210,60,0.85) 50%, rgba(200,168,0,0.4) 75%, transparent 100%);
+      z-index: 4; pointer-events: none;
+      animation: glitchSweep 5s linear infinite; opacity: 0.7;
+    }
+    @keyframes glitchSweep {
+      0%{top:-5px;opacity:0} 5%{opacity:0.7} 95%{opacity:0.7} 100%{top:100%;opacity:0}
+    }
+
+    .holo-vignette {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to right, rgba(6,6,4,0.6) 0%, transparent 15%, transparent 85%, rgba(6,6,4,0.6) 100%),
+        linear-gradient(to bottom, rgba(6,6,4,0.6) 0%, transparent 15%, transparent 85%, rgba(6,6,4,0.6) 100%);
+      z-index: 5; pointer-events: none;
+    }
+
+    .holo-corner { position: absolute; width: 20px; height: 20px; z-index: 6; pointer-events: none; }
+    .holo-corner.tl { top:8px;  left:8px;  border-top:1px solid rgba(180,180,180,0.5); border-left:1px solid rgba(180,180,180,0.5); }
+    .holo-corner.tr { top:8px;  right:8px; border-top:1px solid rgba(180,180,180,0.5); border-right:1px solid rgba(180,180,180,0.5); }
+    .holo-corner.bl { bottom:8px; left:8px;  border-bottom:1px solid rgba(180,180,180,0.5); border-left:1px solid rgba(180,180,180,0.5); }
+    .holo-corner.br { bottom:8px; right:8px;  border-bottom:1px solid rgba(180,180,180,0.5); border-right:1px solid rgba(180,180,180,0.5); }
+
+    .holo-label {
+      position: absolute; bottom:12px; left:14px;
+      font-family: 'Share Tech Mono', monospace; font-size:0.5rem;
+      color:rgba(160,160,160,0.5); letter-spacing:0.22em;
+      text-transform:uppercase; z-index:7; pointer-events:none;
+    }
+    .holo-label-right {
+      position: absolute; bottom:12px; right:14px;
+      font-family: 'Share Tech Mono', monospace; font-size:0.5rem;
+      color:rgba(160,160,160,0.35); letter-spacing:0.18em;
+      text-transform:uppercase; z-index:7; pointer-events:none;
+      animation: blink 3s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    .vast-land-caption {
+      margin-top: 1.2rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--grey);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    /* ── VAST LAND FULL-WIDTH IMAGE ── */
+    .vast-land-banner {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      height: 420px;
+      border-top: 1px solid var(--grey-dark);
+      border-bottom: 1px solid var(--grey-dark);
+    }
+
+    .vast-land-banner img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+      filter: brightness(0.55) contrast(1.1) sepia(0.3);
+    }
+
+    .vast-land-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(6,6,4,0.5) 0%, transparent 30%, transparent 70%, rgba(6,6,4,0.85) 100%),
+        linear-gradient(to right, rgba(6,6,4,0.3) 0%, transparent 20%, transparent 80%, rgba(6,6,4,0.3) 100%);
+    }
+
+    .vast-land-overlay {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 3.5rem;
+      z-index: 2;
+    }
+
+    .vast-land-overlay .vl-title {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 2.2rem;
+      color: var(--yellow-pale);
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .vast-land-overlay .vl-sub {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--grey-light);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+
+    /* ── SECTION BASE ── */
+    .section-outer { border-bottom: 1px solid var(--grey-dark); }
+
+    section {
+      padding: 7rem 3.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      color: var(--yellow-dim);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::after {
+      content: '';
+      height: 1px;
+      width: 60px;
+      background: var(--yellow-dim);
+      opacity: 0.5;
+    }
+
+    h2 {
+      font-family: 'IM Fell English', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 3.5rem;
+      line-height: 1.15;
+    }
+
+    /* ── DEFINITION ── */
+    .definition-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .word-card {
+      background: var(--mid);
+      border: 1px solid var(--grey-dark);
+      padding: 2.2rem;
+      position: relative;
+    }
+
+    .word-card::before {
+      content: 'ENTRY 001';
+      position: absolute;
+      top: -0.6rem; left: 1.2rem;
+      background: var(--mid);
+      padding: 0 0.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.48rem;
+      color: var(--yellow-dim);
+      letter-spacing: 0.2em;
+    }
+
+    .word-main {
+      font-family: 'IM Fell English', serif;
+      font-size: 2rem;
+      color: var(--yellow-pale);
+      margin-bottom: 0.2rem;
+    }
+
+    .word-phonetic {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--grey);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.2rem;
+    }
+
+    .word-pos {
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--grey-light);
+      margin-bottom: 1rem;
+    }
+
+    .word-def {
+      font-size: 1rem;
+      color: var(--grey-text);
+      line-height: 1.85;
+      margin-bottom: 1rem;
+    }
+
+    .word-extended {
+      border-top: 1px solid var(--grey-dark);
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+
+    .word-extended-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.5rem;
+      color: var(--yellow-dim);
+      letter-spacing: 0.15em;
+      margin-bottom: 0.75rem;
+    }
+
+    .word-origin {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--yellow-dim);
+      letter-spacing: 0.06em;
+      border-top: 1px solid var(--grey-dark);
+      padding-top: 1rem;
+      margin-top: 1rem;
+      line-height: 1.7;
+    }
+
+    .conceptual-col p {
+      font-size: 1.15rem;
+      color: var(--grey-text);
+      line-height: 2;
+      margin-bottom: 1.8rem;
+    }
+
+    .conceptual-col strong { color: var(--yellow-pale); font-weight: 400; }
+
+    .pull-quote {
+      border-left: 2px solid var(--yellow-dim);
+      padding: 1.5rem 2rem;
+      margin: 2.5rem 0;
+      background: var(--mid);
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--grey-light);
+      line-height: 1.7;
+    }
+
+
+    /* ── CONCEPT BREAKDOWN ── */
+    .concept-breakdown {
+      margin-top: 2rem;
+      border-left: 1px solid var(--grey-dark);
+      padding-left: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .concept-item {}
+
+    .concept-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--yellow);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .concept-text {
+      font-size: 1rem;
+      color: var(--grey-text);
+      line-height: 1.85;
+    }
+
+    /* ── REFERENCES ── */
+    .refs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 1px;
+      background: var(--grey-dark);
+      border: 1px solid var(--grey-dark);
+    }
+
+    .ref-card {
+      background: var(--dark);
+      padding: 2rem;
+      position: relative;
+      transition: background 0.25s;
+    }
+
+    .ref-card:hover { background: var(--mid); }
+
+    .ref-year {
+      position: absolute; top: 2rem; right: 2rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem; color: var(--grey);
+      letter-spacing: 0.1em;
+    }
+
+    .ref-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem; letter-spacing: 0.2em;
+      color: var(--yellow-dim); text-transform: uppercase;
+      margin-bottom: 0.9rem;
+    }
+
+    .ref-author { font-size: 0.9rem; color: var(--yellow-pale); margin-bottom: 0.2rem; }
+
+    .ref-title {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 1.2rem; color: var(--white);
+      margin-bottom: 0.8rem; line-height: 1.35;
+    }
+
+    .ref-desc { font-size: 0.95rem; color: var(--grey-text); line-height: 1.75; }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0.5rem; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--yellow-dim) 0%, var(--grey-dark) 60%, transparent 100%);
+    }
+
+    .tl-item {
+      padding: 0 0 5rem 3.5rem;
+      position: relative;
+    }
+
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -3px; top: 0.55rem;
+      width: 7px; height: 7px;
+      background: var(--yellow);
+      border: 2px solid var(--black);
+    }
+
+    .tl-item.dim::before { background: var(--grey-dark); }
+    .tl-item.dim .tl-date { color: var(--grey); }
+    .tl-item.dim .tl-title { color: var(--grey-light); }
+
+    .tl-date {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.68rem; color: var(--yellow);
+      letter-spacing: 0.25em; text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .tl-title {
+      font-family: 'IM Fell English', serif;
+      font-size: 1.7rem; color: var(--white);
+      margin-bottom: 1.2rem; line-height: 1.2;
+      font-weight: 400;
+    }
+
+    .tl-body {
+      font-size: 1.1rem;
+      color: var(--grey-text);
+      line-height: 2;
+      max-width: 680px;
+    }
+
+    .tl-body p { margin-bottom: 1.2rem; }
+    .tl-body em { color: var(--yellow-pale); font-style: italic; }
+    .tl-body strong { color: var(--white); font-weight: 400; }
+
+    .tl-image {
+      margin-top: 2rem;
+      max-width: 560px;
+      border: 1px solid var(--grey-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tl-image img {
+      width: 100%; display: block;
+      filter: brightness(0.85) contrast(1.1) sepia(0.25);
+      transition: filter 0.4s;
+    }
+
+    .tl-image:hover img { filter: brightness(1) contrast(1.05) sepia(0.1); }
+
+    .tl-image-label {
+      position: absolute; bottom:0; left:0; right:0;
+      background: rgba(6,6,4,0.8);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.5rem; color: var(--yellow-dim);
+      letter-spacing: 0.2em; padding: 0.5rem 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .tl-image-placeholder {
+      margin-top: 2rem;
+      max-width: 560px;
+      border: 1px dashed var(--grey-dark);
+      padding: 2.5rem 2rem;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem; color: var(--grey);
+      letter-spacing: 0.2em; text-transform: uppercase;
+      background: var(--mid); min-height: 120px;
+    }
+
+
+
+    /* ── VASTLAND SLIDESHOW ── */
+    .vl-slideshow {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .vl-slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+      filter: brightness(0.55) contrast(1.1) sepia(0.3);
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out;
+    }
+
+    .vl-slide.active { opacity: 1; }
+
+    /* ── METHODS ── */
+    .methods-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--grey-dark);
+    }
+
+    .method-card {
+      padding: 2.8rem 2.5rem;
+      border-bottom: 1px solid var(--grey-dark);
+      border-right: 1px solid var(--grey-dark);
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .method-card:nth-child(even) { border-right: none; }
+    .method-card:nth-last-child(-n+2) { border-bottom: none; }
+    .method-card:hover { background: var(--mid); }
+
+    .method-num {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      color: var(--yellow-dim);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .method-title {
+      font-family: 'IM Fell English', serif;
+      font-size: 1.45rem;
+      color: var(--white);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .method-body {
+      font-size: 1rem;
+      color: var(--grey-text);
+      line-height: 1.85;
+    }
+
+    .method-body em { color: var(--yellow-pale); font-style: italic; }
+    .method-body strong { color: var(--white); font-weight: 400; }
+
+    .method-tag {
+      display: inline-block;
+      margin-top: 1.2rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      color: var(--yellow-dim);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: 1px solid var(--yellow-dim);
+      padding: 0.2rem 0.6rem;
+    }
+
+    .method-uncertain {
+      display: inline-block;
+      margin-left: 0.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.5rem;
+      color: var(--grey);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px dashed var(--grey-dark);
+      padding: 0.2rem 0.6rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 4rem 3.5rem;
+      display: flex; justify-content: space-between; align-items: flex-end;
+      border-top: 1px solid var(--grey-dark);
+    }
+
+    .footer-left {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem; color: var(--grey);
+      letter-spacing: 0.15em; line-height: 2.2;
+    }
+
+    .footer-right {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem; color: var(--yellow-dim);
+      letter-spacing: 0.15em; text-align: right; line-height: 2.2;
+    }
+
+    .end-bar {
+      background: var(--yellow);
+      color: var(--black);
+      text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      padding: 0.4rem;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 900px) {
+      #hero { grid-template-columns: 1fr; gap: 3rem; padding: 7rem 1.5rem 4rem; }
+      .definition-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      section { padding: 5rem 1.5rem; }
+      header { padding: 1rem 1.5rem; }
+      nav { display: none; }
+      footer { flex-direction: column; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-logo">Eligible</div>
+    <nav>
+      <a href="#definition">Definition</a>
+      <a href="#references">References</a>
+      <a href="#methods">Methods</a>
+      <a href="#timeline">Timeline</a>
+    </nav>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--grey);letter-spacing:0.15em;">ELG-001 / 2026</div>
+  </header>
+
+  <!-- HERO -->
+  <div id="hero">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Project Overview / Conceptual Framework</div>
+      <h1>ELIG<span class="accent">I</span>BLE</h1>
+      <div class="hero-body">
+        <p>
+          Eligible began as a personal anxiety — an unease about the uncertainties
+          that shape daily life — and expanded into something larger: a question
+          about the futures we are already inside.
+        </p>
+        <p>
+          Dystopia has been a preoccupation since adolescence; I once wrote a
+          dystopian novel. But this project approaches the subject from a
+          different angle entirely.
+        </p>
+        <p>
+          What kind of future awaits us under the governance of artificial
+          intelligence? Can we extend <strong>full trust</strong> to systems
+          we did not choose? Can we hand the responsibility of our futures
+          to algorithmic control?
+        </p>
+        <span class="final-line">Can AI decide who survives —<br>and who is eligible to live?</span>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="holo-wrapper">
+        <video class="holo-video" autoplay muted loop playsinline>
+          <source src="video.mp4" type="video/mp4">
+        </video>
+        <div class="holo-scanlines"></div>
+        <div class="holo-overlay"></div>
+        <div class="holo-vignette"></div>
+        <div class="holo-corner tl"></div>
+        <div class="holo-corner tr"></div>
+        <div class="holo-corner bl"></div>
+        <div class="holo-corner br"></div>
+        <div class="holo-label">Subject: <span style="background:var(--yellow-dim);color:var(--yellow-dim);padding:0 3px;">███</span> — Feed Active</div>
+        <div class="holo-label-right">● Rec</div>
+      </div>
+      <div class="vast-land-caption">Vast Land series, 2026 — cinematographic study</div>
+    </div>
+  </div>
+
+  <!-- VAST LAND BANNER -->
+  <div class="vast-land-banner">
+    <div class="vl-slideshow">
+      <img src="vastland1.png" alt="Vast Land 1" class="vl-slide active" />
+      <img src="vastland2.png" alt="Vast Land 2" class="vl-slide" />
+      <img src="vastland3.png" alt="Vast Land 3" class="vl-slide" />
+      <img src="vastland4.png" alt="Vast Land 4" class="vl-slide" />
+      <img src="vastland5.png" alt="Vast Land 5" class="vl-slide" />
+      <img src="vastland6.png" alt="Vast Land 6" class="vl-slide" />
+        <img src="vastland7.png" alt="Vast Land 5" class="vl-slide" />
+      <img src="vastland9.png" alt="Vast Land 6" class="vl-slide" />
+    </div>
+    <div class="vast-land-overlay">
+      <div class="vl-title">Vast Land</div>
+      <div class="vl-sub">Inspired by Béla Tarr &nbsp;/&nbsp; Cinematographic Fiction &nbsp;/&nbsp; 2026</div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const slides = document.querySelectorAll('.vl-slide');
+      let current = 0;
+      setInterval(() => {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('active');
+      }, 2000);
+    })();
+  </script>
+
+  <!-- 01 DEFINITION -->
+  <div class="section-outer" id="definition">
+    <section>
+      <div class="section-label">01 &nbsp; / &nbsp; Lexicon</div>
+      <h2>What does <em style="color:var(--yellow);font-style:italic;">eligible</em> mean?</h2>
+
+      <div class="definition-grid">
+        <div class="word-card">
+          <div class="word-main">eligible</div>
+          <div class="word-phonetic">/ ˈɛlɪdʒɪb(ə)l /</div>
+          <div class="word-pos">adjective</div>
+          <div class="word-def">
+            1. Satisfying the conditions required to participate in or be chosen for something; qualified, permitted, entitled.<br><br>
+            2. Deemed worthy of selection by an external authority — state, institution, algorithm — according to criteria that may be explicit or concealed.
+          </div>
+          <div class="word-extended">
+            <div class="word-extended-label">Extended (Operative) Definition</div>
+            <div class="word-def">
+              To be eligible is to exist within the visible field of a system.
+              It is to be <em>legible</em> — readable, classifiable, processable.
+              Those rendered ineligible are not absent; they are <em>excluded by design</em>.
+            </div>
+          </div>
+          <div class="word-origin">
+            Origin — Latin <em>eligere</em>: to select, to choose out.<br>
+            from <em>e-</em> (out) + <em>legere</em> (to choose, to read)
+          </div>
+        </div>
+
+        <div class="conceptual-col">
+          <p>
+            The word <strong>"eligible"</strong> appears neutral — bureaucratic, even mundane.
+            Eligibility forms. Eligibility criteria. Eligible candidates.
+            But beneath its administrative surface, the word performs a profound act:
+            it <strong>divides the population</strong>.
+          </p>
+          <p>
+            Those who are eligible are visible, valuable, selectable.
+            Those who are not are rendered <strong>surplus, invisible, unprocessable</strong>.
+            This is not metaphor — it is the operating logic of modern governance,
+            insurance systems, data markets, and algorithmic decision-making.
+          </p>
+
+          <div class="pull-quote">
+            "The body becomes a variable. Its eligibility is calculated,
+            scored, assigned — not once, but continuously, invisibly,
+            by systems that were never designed to be questioned."
+          </div>
+
+          <div class="concept-breakdown">
+
+            <div class="concept-item">
+              <div class="concept-label">The Body as Variable</div>
+              <div class="concept-text">The human being is no longer a fixed entity. For the systems that govern our lives, we are merely a data point — continuously updated, endlessly recalculated.</div>
+            </div>
+
+            <div class="concept-item">
+              <div class="concept-label">Continuous Calculation</div>
+              <div class="concept-text">Your assessment is never a single event. Smart devices and algorithms monitor you in every moment, in real time — not once at the border, but always, everywhere.</div>
+            </div>
+
+            <div class="concept-item">
+              <div class="concept-label">Invisible Surveillance</div>
+              <div class="concept-text">The scoring mechanisms operate in the background. Most of the time, you do not know you are being watched — or how you are being classified.</div>
+            </div>
+
+            <div class="concept-item">
+              <div class="concept-label">Unquestionable Power</div>
+              <div class="concept-text">Those who designed these systems did not build in transparency. Mechanisms for appeal either do not exist, or exist only to give the appearance of recourse.</div>
+            </div>
+
+          </div>
+
+          <p style="margin-top:2.5rem;font-family:'IM Fell English',serif;font-style:italic;font-size:1.05rem;color:var(--grey-light);">Real-world counterparts:</p>
+
+          <div class="concept-breakdown">
+
+            <div class="concept-item">
+              <div class="concept-label">Social Credit Systems</div>
+              <div class="concept-text">Citizens' behaviours are assigned instant financial and social scores — shaping access to transport, housing, education, and employment.</div>
+            </div>
+
+            <div class="concept-item">
+              <div class="concept-label">Wearable Health Technologies</div>
+              <div class="concept-text">Pulse, sleep, and step data collected by wearable devices are processed by insurance companies to set premiums — the body as actuarial evidence.</div>
+            </div>
+
+            <div class="concept-item">
+              <div class="concept-label">Algorithmic Recruitment</div>
+              <div class="concept-text">Artificial intelligence continuously scores job applicants on their facial expressions, tone of voice, and résumé content — before a human has read a single word.</div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 02 REFERENCES -->
+  <div class="section-outer" id="references">
+    <section>
+      <div class="section-label">02 &nbsp; / &nbsp; Source Files</div>
+      <h2>Project References</h2>
+
+      <div class="refs-grid">
+        <div class="ref-card">
+          <div class="ref-year">2019</div>
+          <div class="ref-tag">Surveillance Capitalism</div>
+          <div class="ref-author">Shoshana Zuboff</div>
+          <div class="ref-title">The Age of Surveillance Capitalism</div>
+          <div class="ref-desc">The foundational text for understanding how behavioral data becomes the raw material for prediction markets — and how populations are rendered eligible or ineligible by algorithmic logic without their knowledge or consent.</div>
+        </div>
+
+        <div class="ref-card">
+          <div class="ref-year">1976</div>
+          <div class="ref-tag">Biopolitics</div>
+          <div class="ref-author">Michel Foucault</div>
+          <div class="ref-title">The Birth of Biopolitics / Discipline and Punish</div>
+          <div class="ref-desc">Foucault's theorization of biopower — the administration of life itself by sovereign and disciplinary regimes. Who lives, who is protected, who is expendable.</div>
+        </div>
+
+        <div class="ref-card">
+          <div class="ref-year">2022</div>
+          <div class="ref-tag">Biopolitics / Pharmacology</div>
+          <div class="ref-author">Paul B. Preciado</div>
+          <div class="ref-title">Testo Junkie / Can the Monster Speak?</div>
+          <div class="ref-desc">Preciado's pharmacopornographic theory — the body as a site of bio-political production, hormonal governance, and institutional capture. The body is not owned; it is administered.</div>
+        </div>
+
+        <div class="ref-card">
+          <div class="ref-year">1970</div>
+          <div class="ref-tag">Feminist Theory / Dystopia</div>
+          <div class="ref-author">Shulamith Firestone</div>
+          <div class="ref-title">Airless Spaces / The Dialectic of Sex</div>
+          <div class="ref-desc">Firestone's radical feminist critique of biological determinism and institutional reproduction — precursor to contemporary discussions of bodily eligibility, reproductive control, and the politics of biological classification.</div>
+        </div>
+
+        <div class="ref-card">
+          <div class="ref-year">2015</div>
+          <div class="ref-tag">Aesthetics / Philosophy</div>
+          <div class="ref-author">Byung-Chul Han</div>
+          <div class="ref-title">Saving Beauty</div>
+          <div class="ref-desc">Han's diagnosis of the smooth, frictionless aesthetic of the contemporary world — how beauty has been stripped of negativity, wound, and resistance. Against the polished surface: the eligibility of the visible.</div>
+        </div>
+
+        <div class="ref-card">
+          <div class="ref-year">—</div>
+          <div class="ref-tag">Cinematography / Tone</div>
+          <div class="ref-author">Béla Tarr</div>
+          <div class="ref-title">Sátántangó / The Turin Horse</div>
+          <div class="ref-desc">Tarr's long-take aesthetics of endurance, desolation, and vast landscapes — the cinematic origin of <em>Vast Land</em>. A world where time itself feels administered, and the horizon offers no escape.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 03 METHODS -->
+  <div class="section-outer" id="methods">
+    <section>
+      <div class="section-label">03 &nbsp; / &nbsp; Methods &amp; Tools</div>
+      <h2>How the work is made</h2>
+
+      <div class="methods-grid">
+
+        <div class="method-card">
+          <div class="method-num">01 &nbsp;/&nbsp; AI Image Generation</div>
+          <div class="method-title">OpenArt 3D World</div>
+          <div class="method-body">
+            The visual environments of the film are being generated using OpenArt's 3D World AI feature.
+          </div>
+          <div class="method-tag"><a href="https://openart.ai/suite/characters-and-worlds" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--yellow-dim);">OpenArt / 3D World AI ↗</a></div>
+        </div>
+
+        <div class="method-card">
+          <div class="method-num">02 &nbsp;/&nbsp; Character / Model</div>
+          <div class="method-title">NANA — a model I built</div>
+          <div class="method-body">
+            Over two years of working with ComfyUI, I developed a top model called <em>NANA</em>.
+          </div>
+          <div class="method-tag">ComfyUI / Custom Model</div>
+          <div class="method-uncertain">Under consideration</div>
+          <div style="margin-top:1rem;"><a href="https://www.instagram.com/nanavirtual2025/" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--yellow-dim);letter-spacing:0.18em;text-decoration:none;border-bottom:1px solid var(--yellow-dim);">@nanavirtual2025 ↗</a></div>
+        </div>
+
+        <div class="method-card">
+          <div class="method-num">03 &nbsp;/&nbsp; Spatial Interaction</div>
+          <div class="method-title">Pure Data &amp; Raspberry Pi</div>
+          <div class="method-body">
+            The installation space is conceived as a responsive environment. Using Pure Data for real-time audio and sensor processing, paired with Raspberry Pi hardware, the space will react to the presence of the viewer —
+          </div>
+          <div class="method-tag">Pure Data / Raspberry Pi</div>
+        </div>
+
+        <div class="method-card">
+          <div class="method-num">04 &nbsp;/&nbsp; Physical Structure</div>
+          <div class="method-title">3D Print — GCode &amp; Nozzle Experiments</div>
+          <div class="method-body">
+            During this period I learned new 3D printing techniques — <em>GCode manipulation</em>, changing nozzle sizes mid-print, controlling infill as surface texture. These experiments produced forms that are neither fully mechanical nor fully organic. The physical structure of the installation may be printed this way: a shape that carries the logic of the project in its material, <strong>something built by instruction, not by hand.</strong>
+          </div>
+          <div class="method-tag">3D Print / GCode</div>
+          <div class="method-uncertain">Structure — Under Development</div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- 04 TIMELINE -->
+  <div class="section-outer" id="timeline">
+    <section>
+      <div class="section-label">04 &nbsp; / &nbsp; Project Log</div>
+      <h2>Timeline</h2>
+
+      <div class="timeline">
+
+        <div class="tl-item">
+          <div class="tl-date">November 2025</div>
+          <div class="tl-title">First Contact — JAI / Ralf Beacker</div>
+          <div class="tl-body">
+            <p>Attended a class with Ralf Beacker and began thinking seriously about AI and its effects on daily life. The starting point was not academic — it was personal unease.</p>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">February 2026</div>
+          <div class="tl-title">First Draft — <em>Pearls Forming</em></div>
+          <div class="tl-body">
+            <p>The initial concept was called <em>Pearls Forming</em> — a mechanism that creates pearls from data gathered from the outside world. A pearl looks dense and autonomous, yet it is entirely shaped by external pressure.</p>
+            <p>The oyster's environment is a stress factor; the pearl is its response. We are the same: continuously shaped by inputs we perceive from outside. <strong>As the pressure increases, the pearl grows smaller and denser.</strong></p>
+          </div>
+          <div class="tl-image">
+            <img src="sketch.png" alt="Pearls Forming — installation sketch" />
+            <div class="tl-image-label">Fig. 01 — Pearls Forming, installation sketch, Feb 2026</div>
+          </div>
+          <div class="tl-image" style="margin-top:1.5rem;aspect-ratio:16/9;height:auto;">
+            <video style="width:100%;display:block;filter:brightness(0.9) contrast(1.1) sepia(0.15);" autoplay muted loop playsinline>
+              <source src="video2.mp4" type="video/mp4">
+            </video>
+            <div class="tl-image-label">Fig. 02 — Pearls Forming, concept video, Feb 2026</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">February/March 2026</div>
+          <div class="tl-title">Pivot — Fear, Dystopia, AI Invasion</div>
+          <div class="tl-body">
+            <p>After reflection on what I actually wanted to say, the project shifted. The real subject was fear — specifically the fear of the future and AI's growing encroachment on life.</p>
+            <p>Dystopia became the framework for the project—a genre I have been drawn to since high school and one in which I have written fiction. During this period, I also produced a poster about unknown futures, which further crystallised the direction of my work. Later, I created a poster design for the Hochschultage competition related to the topic. The project also reflects on this transitional period and what art students are doing during it.</p>
+            <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:1.25rem;color:var(--yellow-pale);margin-top:0.8rem;">How does pressure from the outside shape us — and who gets to decide?</p>
+          </div>
+          <div class="tl-image">
+            <img src="sketch2.jpg" alt="Poster — Future Unknown" />
+            <div class="tl-image-label">Fig. 02 — Poster / Future Unknown, February/March 2026</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">April 2026</div>
+          <div class="tl-title">Workflow — Who Is Eligible to Survive?</div>
+          <div class="tl-body">
+            <p>Began developing methods for making the control logic of AI visible. Built a workflow in ComfyUI that decides the futures of newborns based solely on their appearance — a direct materialisation of algorithmic judgment.</p>
+            <p><strong>The system classifies. It selects. It eliminates.</strong> The question became the title.</p>
+          </div>
+          <div class="tl-image" style="aspect-ratio:16/9;height:auto;">
+            <video style="width:100%;display:block;filter:brightness(0.9) contrast(1.1) sepia(0.15);" autoplay muted loop playsinline>
+              <source src="video3.mp4" type="video/mp4">
+            </video>
+            <div class="tl-image-label">Fig. 03 — ComfyUI Workflow, Apr 2026</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">June 2026</div>
+          <div class="tl-title">Production — AI-Assisted 3D Film</div>
+          <div class="tl-body">
+            <p>Started producing a 3D AI film that visualises the dystopia. The film renders environments and scenarios that could not be filmed conventionally — institutional spaces, classification rituals, futures that don't exist yet but feel inevitable.</p>
+            <p>The cinematographic language draws on <em>Vast Land</em>: wide, slow, oppressive. A world that has already accepted what we are still pretending is a future problem.</p>
+          </div>
+        </div>
+
+        <div class="tl-item dim">
+          <div class="tl-date">July 2026</div>
+          <div class="tl-title">Exhibition — First Public Presentation</div>
+          <div class="tl-body">
+            <p>The first draft of the project will be presented as a film. An exhibition format. This website serves as the conceptual companion to that work.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">
+      Eligible — Project File ELG-001<br>
+      Classification: Restricted / Internal Use<br>
+      Biopolitics &nbsp;×&nbsp; Surveillance Capitalism &nbsp;×&nbsp; Dystopian Fiction
+    </div>
+    <div class="footer-right">
+      Status: Active — Development Phase<br>
+      Last Updated: May 2026<br>
+      <span style="color:var(--grey)">All Rights Reserved</span>
+    </div>
+  </footer>
+
+  <div class="end-bar">— End of Document — Eligible — ELG-001 — Do Not Distribute —</div>
+
+</body>
+</html>
